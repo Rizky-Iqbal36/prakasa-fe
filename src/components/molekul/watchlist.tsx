@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -26,7 +25,7 @@ import { useAuth } from "../../app/context/AuthProvider";
 
 import BackendInteractor from "../../app/api";
 
-import { TWatchlist } from "../../interface";
+import { TMovie, TWatchlist } from "../../interface";
 import { Collapse } from "@mui/material";
 import {
   MovieBox,
@@ -34,6 +33,8 @@ import {
   MovieThumbnail,
 } from "../../styles/molekul/movies.element";
 import { useMutation } from "react-query";
+import ButtonEditWatchlist from "../atom/buttonEditWatchlist";
+import { Option } from "react-multi-select-component";
 
 const WatclisthScreen = () => {
   const { token } = useAuth();
@@ -41,13 +42,24 @@ const WatclisthScreen = () => {
 
   const [watchlist, setWatchlist] = useState<TWatchlist[]>([]);
   const [showMovies, setShowMovies] = useState<boolean[]>([]);
+  const [availableMovies, setAvailableMovies] = useState<TMovie[]>([]);
+  const [moviesOption, setMoviesOption] = useState<Option[]>([]);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     backendInteractor.watchlist().then((data) => {
       setWatchlist(data);
       setShowMovies(new Array(data.length).fill(false));
-      setLoading(false);
+      backendInteractor.movies().then((data) => {
+        setAvailableMovies(data);
+        setMoviesOption(
+          data.map(({ id, title }) => ({
+            value: id,
+            label: title,
+          }))
+        );
+        setLoading(false);
+      });
     });
   }, []);
 
@@ -74,7 +86,11 @@ const WatclisthScreen = () => {
     <Container>
       <HeaderWrapper>
         <PageTitle>Watchlist</PageTitle>
-        <ButtonAddWatchlist setWatchlist={setWatchlist} />
+        <ButtonAddWatchlist
+          setWatchlist={setWatchlist}
+          movies={availableMovies}
+          moviesOption={moviesOption}
+        />
       </HeaderWrapper>
       <Divider />
       {!loading ? (
@@ -100,9 +116,12 @@ const WatclisthScreen = () => {
                       <VisibilityIcon style={{ fill: "green" }} />
                     )}
                   </WatchlistButton>
-                  <WatchlistButton>
-                    <EditIcon style={{ fill: "green" }} />
-                  </WatchlistButton>
+                  <ButtonEditWatchlist
+                    watchlistIndex={index}
+                    watchlist={{ id, name, movies }}
+                    movies={availableMovies}
+                    setWatchlist={setWatchlist}
+                  />
                   <WatchlistButton
                     onClick={() => deleteWatchlist({ id, index })}
                   >

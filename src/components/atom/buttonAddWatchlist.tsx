@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { MultiSelect, Option } from "react-multi-select-component";
+import React, { useState } from "react";
+import { Option } from "react-multi-select-component";
+import { useMutation } from "react-query";
 
 import _ from "lodash";
 import { useFormik } from "formik";
@@ -8,21 +9,15 @@ import * as Yup from "yup";
 import BasicModal from "./modal";
 import BackendInteractor from "../../app/api";
 import { useAuth } from "../../app/context/AuthProvider";
-import { useMutation } from "react-query";
 import { TMovie, TWatchlist } from "../../interface";
-import styled from "styled-components";
-// import { TextField } from "@mui/material";
-
-const StyledMultiSelect = styled(MultiSelect)`
-  width: 70%;
-`;
+import { StyledMultiSelect } from "../../styles/atom/form.element";
 
 const ButtonAddWatchlist: React.FC<{
   setWatchlist: React.Dispatch<React.SetStateAction<TWatchlist[]>>;
-}> = ({ setWatchlist }) => {
+  movies: TMovie[];
+  moviesOption: Option[];
+}> = ({ setWatchlist, movies, moviesOption }) => {
   const { token } = useAuth();
-  const [movies, setMovies] = useState<TMovie[]>([]);
-  const [moviesOption, setMoviesOption] = useState<Option[]>([]);
 
   const backendInteractor = new BackendInteractor(token);
   const { handleSubmit, getFieldProps, errors, touched, setFieldValue } =
@@ -66,7 +61,6 @@ const ButtonAddWatchlist: React.FC<{
           });
           return newValue;
         });
-        console.log("Success Add watchlist", movies);
       },
       onError(err: any) {
         const data = err.response.data;
@@ -76,17 +70,6 @@ const ButtonAddWatchlist: React.FC<{
   );
 
   const [selected, setSelected] = useState<Option[]>([]);
-  useEffect(() => {
-    backendInteractor.movies().then((data) => {
-      setMovies(data);
-      setMoviesOption(
-        data.map(({ id, title }) => ({
-          value: id,
-          label: title,
-        }))
-      );
-    });
-  }, []);
 
   return (
     <BasicModal>

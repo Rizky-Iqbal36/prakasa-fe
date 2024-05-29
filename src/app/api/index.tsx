@@ -71,6 +71,22 @@ class BackendInteractor {
       .delete(`watchlist/${id}`, postOptions)
       .then((res) => res.data);
   }
+
+  public async updateWatchlist({
+    id,
+    name,
+    add,
+    remove,
+  }: {
+    id: number;
+    name: string;
+    add: number[];
+    remove: number[];
+  }): Promise<any> {
+    return this.client
+      .put("watchlist/update", { id, name, add, remove }, postOptions)
+      .then((res) => res.data);
+  }
 }
 
 export default BackendInteractor;
