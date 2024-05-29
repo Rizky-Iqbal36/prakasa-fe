@@ -39,6 +39,12 @@ class BackendInteractor {
       .post("movie/create", payload, postOptions)
       .then((res) => res.data);
   }
+
+  public async deleteMovie(id: number) {
+    return this.client
+      .delete(`movie/${id}`, postOptions)
+      .then((res) => res.data);
+  }
 }
 
 export default BackendInteractor;

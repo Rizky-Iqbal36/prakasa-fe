@@ -45,6 +45,24 @@ const MoviesScreen = () => {
       setLoading(false);
     });
   }, []);
+  const { mutate: deleteMovie } = useMutation(
+    async ({ id }: { id: number; index: number }) =>
+      backendInteractor.deleteMovie(id),
+    {
+      async onSuccess({ message }: { message: string }, { index }) {
+        setMovies((prevValue) => {
+          const newValue = prevValue;
+          newValue.splice(index, 1);
+          return newValue;
+        });
+        window.alert(message);
+      },
+      onError(err: any) {
+        const data = err.response.data;
+        window.alert(data.message);
+      },
+    }
+  );
 
   return (
     <Container>
@@ -55,9 +73,10 @@ const MoviesScreen = () => {
       <Divider />
       {!loading ? (
         <MovieContainer>
-          {movies?.map(({ title, thumbnail }) => {
+          {movies?.map(({ title, thumbnail, id }, index) => {
             return (
               <BasicModal
+                key={id}
                 CustomeButton={({ onClick }) => {
                   return (
                     <MovieBox onClick={onClick} key={title}>
@@ -74,7 +93,9 @@ const MoviesScreen = () => {
                       <ModifyMovieButton>
                         <EditIcon style={{ fill: "green" }} />
                       </ModifyMovieButton>
-                      <ModifyMovieButton>
+                      <ModifyMovieButton
+                        onClick={() => deleteMovie({ id, index })}
+                      >
                         <DeleteIcon style={{ fill: "red" }} />
                       </ModifyMovieButton>
                     </ModifyMovieButtonWrapper>
