@@ -33,6 +33,7 @@ import {
   MovieContainer,
   MovieThumbnail,
 } from "../../styles/molekul/movies.element";
+import { useMutation } from "react-query";
 
 const WatclisthScreen = () => {
   const { token } = useAuth();
@@ -49,6 +50,25 @@ const WatclisthScreen = () => {
       setLoading(false);
     });
   }, []);
+
+  const { mutate: deleteWatchlist } = useMutation(
+    async ({ id }: { id: number; index: number }) =>
+      backendInteractor.deleteWatchlist(id),
+    {
+      async onSuccess({ message }: { message: string }, { index }) {
+        setWatchlist((prevValue) => {
+          const newValue = prevValue;
+          newValue.splice(index, 1);
+          return newValue;
+        });
+        window.alert(message);
+      },
+      onError(err: any) {
+        const data = err.response.data;
+        window.alert(data.message);
+      },
+    }
+  );
 
   return (
     <Container>
@@ -83,7 +103,9 @@ const WatclisthScreen = () => {
                   <WatchlistButton>
                     <EditIcon style={{ fill: "green" }} />
                   </WatchlistButton>
-                  <WatchlistButton>
+                  <WatchlistButton
+                    onClick={() => deleteWatchlist({ id, index })}
+                  >
                     <DeleteIcon style={{ fill: "red" }} />
                   </WatchlistButton>
                 </WatchlistButtonWrapper>

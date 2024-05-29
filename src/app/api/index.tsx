@@ -65,6 +65,12 @@ class BackendInteractor {
   public async watchlist(): Promise<TWatchlist[]> {
     return this.client.get("watchlist").then((res) => res.data.data);
   }
+
+  public async deleteWatchlist(id: number) {
+    return this.client
+      .delete(`watchlist/${id}`, postOptions)
+      .then((res) => res.data);
+  }
 }
 
 export default BackendInteractor;
