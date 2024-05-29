@@ -24,3 +24,20 @@ export const MovieThumbnail = styled.img`
   height: 360px;
   border-radius: 20px;
 `;
+
+export const ModifyMovieContainer = styled.div``;
+
+export const ModifyMovieHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ModifyMovieButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const ModifyMovieButton = styled.div`
+  cursor: pointer;
+`;

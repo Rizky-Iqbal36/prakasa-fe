@@ -67,7 +67,19 @@ const MoviesScreen = () => {
                   );
                 }}
               >
-                {title}
+                <ModifyMovieContainer>
+                  <ModifyMovieHeader>
+                    <p>{title}</p>
+                    <ModifyMovieButtonWrapper>
+                      <ModifyMovieButton>
+                        <EditIcon style={{ fill: "green" }} />
+                      </ModifyMovieButton>
+                      <ModifyMovieButton>
+                        <DeleteIcon style={{ fill: "red" }} />
+                      </ModifyMovieButton>
+                    </ModifyMovieButtonWrapper>
+                  </ModifyMovieHeader>
+                </ModifyMovieContainer>
               </BasicModal>
             );
           })}
