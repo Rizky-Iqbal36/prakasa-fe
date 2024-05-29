@@ -125,7 +125,7 @@ const Text = styled.span<{ $props: { clicked: boolean; active: boolean } }>`
     return css`
       width: ${$props.clicked ? "100%" : "0"};
       margin-left: ${$props.clicked ? "1.5rem" : "0"};
-      color: ${$props.active ? "#1876D1" : "white"};
+      color: ${$props.active ? "var(--active)" : "white"};
     `;
   }}
   overflow: hidden;
@@ -208,14 +208,16 @@ const sidebar = () => {
       name: "Movies",
       path: "/movies",
       icons: (active: boolean) => (
-        <LocalMoviesIcon style={{ fill: active ? "#1876D1" : "white" }} />
+        <LocalMoviesIcon style={{ fill: active ? "var(--active)" : "white" }} />
       ),
     },
     {
       name: "Watchlist",
       path: "/watchlist",
       icons: (active: boolean) => (
-        <PlaylistPlayIcon style={{ fill: active ? "#1876D1" : "white" }} />
+        <PlaylistPlayIcon
+          style={{ fill: active ? "var(--active)" : "white" }}
+        />
       ),
     },
   ];

@@ -1,6 +1,12 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import appConfig from "../config";
 import { TAuthPayload } from "../../interface";
+
+const postOptions: AxiosRequestConfig<any> = {
+  headers: {
+    "content-type": "application/json",
+  },
+};
 
 class BackendInteractor {
   public client: AxiosInstance;
@@ -18,11 +24,7 @@ class BackendInteractor {
 
   public async auth(mode: "register" | "login", payload: TAuthPayload) {
     return this.client
-      .post(`auth/${mode}`, payload, {
-        headers: {
-          "content-type": "application/json",
-        },
-      })
+      .post(`auth/${mode}`, payload, postOptions)
       .then((res) => res.data);
   }
 
@@ -30,6 +32,12 @@ class BackendInteractor {
     { id: number; title: string; studio: string; thumbnail: string }[]
   > {
     return this.client.get("movie/list").then((res) => res.data.data);
+  }
+
+  public async addMovie(payload: any) {
+    return this.client
+      .post("movie/create", payload, postOptions)
+      .then((res) => res.data);
   }
 }
 

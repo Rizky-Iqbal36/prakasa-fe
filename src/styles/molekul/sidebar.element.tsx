@@ -15,6 +15,12 @@ export const Container = styled.div`
   height: 100%;
 `;
 
+export const HeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const PageTitle = styled.h1`
   margin: 10px 0;
 `;
