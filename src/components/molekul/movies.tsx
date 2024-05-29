@@ -138,10 +138,18 @@ const MoviesScreen = () => {
         <MovieContainer>
           {movies?.map(({ title, thumbnail }) => {
             return (
-              <MovieBox key={title}>
-                <MovieThumbnail src={thumbnail} alt={title} />
+              <BasicModal
+                CustomeButton={({ onClick }) => {
+                  return (
+                    <MovieBox onClick={onClick} key={title}>
+                      <MovieThumbnail src={thumbnail} alt={title} />
+                      {title}
+                    </MovieBox>
+                  );
+                }}
+              >
                 {title}
-              </MovieBox>
+              </BasicModal>
             );
           })}
         </MovieContainer>
