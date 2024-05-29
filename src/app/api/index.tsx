@@ -40,6 +40,18 @@ class BackendInteractor {
       .then((res) => res.data);
   }
 
+  public async updateMovie({
+    movie_id,
+    title,
+  }: {
+    movie_id: number;
+    title: string;
+  }) {
+    return this.client
+      .put("movie/update", { movie_id, title }, postOptions)
+      .then((res) => res.data);
+  }
+
   public async deleteMovie(id: number) {
     return this.client
       .delete(`movie/${id}`, postOptions)
