@@ -19,18 +19,6 @@ import React, {
     const [token, setToken] = useState(cookies.get("accessToken") || "");
     defaultValue.token = token;
     (defaultValue as any).setToken = setToken;
-
-    useEffect(() => {
-      if (token) {
-        const user = JSON.parse(localStorage.getItem("user") ?? "false");
-        if (!user) {
-          const backendInteractor = new BackendInteractor(token);
-          backendInteractor.profile().then((data) => {
-            localStorage.setItem("user", JSON.stringify(data));
-          });
-        }
-      } else localStorage.removeItem("user");
-    }, []);
   
     return (
       <AuthContext.Provider value={defaultValue}>{children}</AuthContext.Provider>

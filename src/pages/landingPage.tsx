@@ -56,7 +56,7 @@ function LandingPage() {
 
   const user = JSON.parse(localStorage.getItem("user") ?? "false");
   useEffect(() => {
-    if (user) navigate("/dashboard");
+    if (user) navigate("/movies");
   }, []);
 
   return (

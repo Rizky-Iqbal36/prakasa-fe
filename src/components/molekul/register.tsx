@@ -41,7 +41,7 @@ const Register = () => {
 
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        navigate("/dashboard");
+        navigate("/movies");
       },
       onError(err: any) {
         const data = err.response.data;
