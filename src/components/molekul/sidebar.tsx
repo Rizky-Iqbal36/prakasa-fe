@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import styled, { css } from "styled-components";
 
@@ -194,11 +194,12 @@ const Name = styled.div`
 `;
 
 const sidebar = () => {
+  const location = useLocation();
+
   const [user] = useState(JSON.parse(localStorage.getItem("user") ?? "false"));
 
   const [clicked, setClick] = useState(false);
   const handleClick = () => setClick(!clicked);
-  const [activeItem, setActiveItem] = useState(0);
 
   const [profileClick, setprofileClick] = useState(false);
   const handleProfileClick = () => setprofileClick(!profileClick);
@@ -227,10 +228,10 @@ const sidebar = () => {
       <Button $props={{ clicked }} onClick={() => handleClick()} />
       <SidebarContainer>
         <SlickBar $props={{ clicked }}>
-          {ItemData.map(({ icons, name, path }, index) => {
-            const isActive = activeItem === index;
+          {ItemData.map(({ icons, name, path }) => {
+            const isActive = location.pathname === path;
             return (
-              <Item key={name} onClick={() => setActiveItem(index)} to={path}>
+              <Item key={name} to={path}>
                 {icons(isActive)}
                 <Text $props={{ clicked, active: isActive }}>{name}</Text>
               </Item>
