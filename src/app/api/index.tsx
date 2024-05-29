@@ -16,10 +16,7 @@ class BackendInteractor {
     });
   }
 
-  public async auth(
-    mode: "register" | "login",
-    payload: TAuthPayload
-  ) {
+  public async auth(mode: "register" | "login", payload: TAuthPayload) {
     return this.client
       .post(`auth/${mode}`, payload, {
         headers: {
@@ -29,56 +26,10 @@ class BackendInteractor {
       .then((res) => res.data);
   }
 
-  public async logout() {
-    return this.client.get("/logout").then((res) => res.data);
-  }
-
-  public async profile() {
-    return this.client.get("/user/profile").then((res) => res.data);
-  }
-
-  public async editProfile(payload: { name: string }) {
-    return this.client.post("user/profile", payload).then((res) => res.data);
-  }
-
-  public async resetPassword(payload: {
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-  }) {
-    return this.client.post("password/reset", payload).then((res) => res.data);
-  }
-
-  public async setPassword(payload: {
-    newPassword: string;
-    confirmPassword: string;
-  }) {
-    return this.client.post("password/set", payload).then((res) => res.data);
-  }
-
-  public async users(): Promise<
-    {
-      id: number;
-      profilePicture: string;
-      email: string;
-      name: string;
-      totalLogin: number;
-      lastSessionDate: string;
-      emailVerificationDate: string;
-      registrationDate: string;
-    }[]
+  public async movies(): Promise<
+    { id: number; title: string; studio: string; thumbnail: string }[]
   > {
-    return this.client.get("/user/list").then((res) => res.data.data);
-  }
-
-  public async resendVerification() {
-    return this.client
-      .get("/email/resend-verification")
-      .then((res) => res.data);
-  }
-
-  public async usersStatistic() {
-    return this.client.get("/user/statistic").then((res) => res.data);
+    return this.client.get("movie/list").then((res) => res.data.data);
   }
 }
 
