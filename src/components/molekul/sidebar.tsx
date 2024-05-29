@@ -7,6 +7,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import LogoutButton from "../atom/logoutButton";
 
 type TPropClicked = { $props: { clicked: boolean } };
 
@@ -123,7 +124,7 @@ const Text = styled.span<{ $props: { clicked: boolean; active: boolean } }>`
     return css`
       width: ${$props.clicked ? "100%" : "0"};
       margin-left: ${$props.clicked ? "1.5rem" : "0"};
-      color: ${$props.active ? "#0C6DFD" : "white"};
+      color: ${$props.active ? "#1876D1" : "white"};
     `;
   }}
   overflow: hidden;
@@ -174,6 +175,7 @@ const Name = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 20px;
 
   h4 {
     display: inline-block;
@@ -186,26 +188,6 @@ const Name = styled.div`
 
     &:hover {
       text-decoration: underline;
-    }
-  }
-`;
-
-const Logout = styled.button`
-  border: none;
-  width: 2rem;
-  height: 2rem;
-  background-color: transparent;
-
-  svg {
-    width: 100%;
-    height: auto;
-    filter: invert(15%) sepia(70%) saturate(6573%) hue-rotate(2deg)
-      brightness(100%) contrast(126%);
-    transition: all 0.3s ease;
-    &:hover {
-      border: none;
-      padding: 0;
-      opacity: 0.5;
     }
   }
 `;
@@ -225,14 +207,14 @@ const sidebar = () => {
       name: "Movies",
       path: "/movies",
       icons: (active: boolean) => (
-        <LocalMoviesIcon style={{ fill: active ? "#0C6DFD" : "white" }} />
+        <LocalMoviesIcon style={{ fill: active ? "#1876D1" : "white" }} />
       ),
     },
     {
       name: "Watchlist",
       path: "/watchlist",
       icons: (active: boolean) => (
-        <PlaylistPlayIcon style={{ fill: active ? "#0C6DFD" : "white" }} />
+        <PlaylistPlayIcon style={{ fill: active ? "#1876D1" : "white" }} />
       ),
     },
   ];
@@ -259,9 +241,7 @@ const sidebar = () => {
           />
           <Details $props={{ clicked: profileClick }}>
             <Name>{user.email}</Name>
-            <Logout>
-              <LogoutIcon />
-            </Logout>
+            <LogoutButton />
           </Details>
         </Profile>
       </SidebarContainer>
