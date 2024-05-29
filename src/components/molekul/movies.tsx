@@ -9,7 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import BackendInteractor from "../../app/api";
 
-import { Await, TMovie } from "../../interface";
+import { TMovie } from "../../interface";
 
 import { useAuth } from "../../app/context/AuthProvider";
 

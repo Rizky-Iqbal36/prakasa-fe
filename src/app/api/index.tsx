@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import appConfig from "../config";
-import { TAuthPayload } from "../../interface";
+import { TAuthPayload, TMovie, TWatchlist } from "../../interface";
 
 const postOptions: AxiosRequestConfig<any> = {
   headers: {
@@ -28,9 +28,7 @@ class BackendInteractor {
       .then((res) => res.data);
   }
 
-  public async movies(): Promise<
-    { id: number; title: string; studio: string; thumbnail: string }[]
-  > {
+  public async movies(): Promise<TMovie[]> {
     return this.client.get("movie/list").then((res) => res.data.data);
   }
 
@@ -62,6 +60,10 @@ class BackendInteractor {
     return this.client
       .post("watchlist/create", payload, postOptions)
       .then((res) => res.data);
+  }
+
+  public async watchlist(): Promise<TWatchlist[]> {
+    return this.client.get("watchlist").then((res) => res.data.data);
   }
 }
 
