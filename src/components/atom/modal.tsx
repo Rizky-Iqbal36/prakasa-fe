@@ -19,9 +19,11 @@ const style = {
 
 const BasicModal: React.FC<{
   children: React.ReactNode;
+  onClose?: () => void;
   CustomeButton?: React.FC<{ onClick: () => void }>;
 }> = ({
   children,
+  onClose,
   CustomeButton = ({ onClick }) => {
     return (
       <Button onClick={onClick}>
@@ -39,7 +41,10 @@ const BasicModal: React.FC<{
       <CustomeButton onClick={handleOpen} />
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+          if (onClose) onClose();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

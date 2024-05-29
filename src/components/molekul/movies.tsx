@@ -153,6 +153,7 @@ const MoviesScreen = () => {
             return (
               <BasicModal
                 key={id}
+                onClose={() => setShowUpdateForm(false)}
                 CustomeButton={({ onClick }) => {
                   return (
                     <MovieBox onClick={onClick} key={title}>
