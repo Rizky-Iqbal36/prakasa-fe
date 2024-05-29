@@ -57,6 +57,12 @@ class BackendInteractor {
       .delete(`movie/${id}`, postOptions)
       .then((res) => res.data);
   }
+
+  public async addWatchlist(payload: any) {
+    return this.client
+      .post("watchlist/create", payload, postOptions)
+      .then((res) => res.data);
+  }
 }
 
 export default BackendInteractor;

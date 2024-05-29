@@ -3,58 +3,17 @@ import { useMutation } from "react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import { Box, Collapse, FormControlLabel } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import BackendInteractor from "../../app/api";
 
-import { Await } from "../../interface";
+import { Await, TMovie } from "../../interface";
 
 import { useAuth } from "../../app/context/AuthProvider";
 
 import BasicModal from "../atom/modal";
-
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import FormControlLabel from "@mui/material/FormControlLabel";
-
-export function SimpleCollapse() {
-  const [checked, setChecked] = React.useState(false);
-
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
-  return (
-    <>
-      <FormControlLabel
-        control={
-          <ModifyMovieButton onClick={handleChange}>
-            <EditIcon style={{ fill: "green" }} />
-          </ModifyMovieButton>
-        }
-        label="Show"
-      />
-      <Box>
-        <Collapse in={checked}>
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <p>Update Movie</p>
-
-            {/* <button type="submit" style={{ margin: 5 }} disabled={isLoading}>
-          {isLoading ? "Loading" : "Update"}
-        </button> */}
-          </form>
-        </Collapse>
-      </Box>
-    </>
-  );
-}
 
 import {
   Container,
@@ -73,7 +32,6 @@ import {
 } from "../../styles/molekul/movies.element";
 import ButtonAddMovie from "../atom/buttonAddMovie";
 
-type TMovie = Await<ReturnType<typeof BackendInteractor.prototype.movies>>[0];
 const MoviesScreen = () => {
   const { token } = useAuth();
   const backendInteractor = new BackendInteractor(token);
