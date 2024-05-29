@@ -9,7 +9,7 @@ import BasicModal from "./modal";
 import BackendInteractor from "../../app/api";
 import { useAuth } from "../../app/context/AuthProvider";
 import { useMutation } from "react-query";
-import { TMovie } from "../../interface";
+import { TMovie, TWatchlist } from "../../interface";
 import styled from "styled-components";
 // import { TextField } from "@mui/material";
 
@@ -17,8 +17,13 @@ const StyledMultiSelect = styled(MultiSelect)`
   width: 70%;
 `;
 
-const ButtonAddWatchlist: React.FC = () => {
+const ButtonAddWatchlist: React.FC<{
+  setWatchlist: React.Dispatch<React.SetStateAction<TWatchlist[]>>;
+}> = ({ setWatchlist }) => {
   const { token } = useAuth();
+  const [movies, setMovies] = useState<TMovie[]>([]);
+  const [moviesOption, setMoviesOption] = useState<Option[]>([]);
+
   const backendInteractor = new BackendInteractor(token);
   const { handleSubmit, getFieldProps, errors, touched, setFieldValue } =
     useFormik({
@@ -39,10 +44,29 @@ const ButtonAddWatchlist: React.FC = () => {
       },
     });
   const { mutate: addWatchlist, isLoading } = useMutation(
-    async (payload: any) => backendInteractor.addWatchlist(payload),
+    async (payload: { name: string; movies: number[] }) =>
+      backendInteractor.addWatchlist(payload),
     {
-      async onSuccess({ message }: { message: string }) {
+      async onSuccess(
+        { message, data }: { message: string; data: { watchlist_id: number } },
+        { name, movies: movieIds }
+      ) {
         window.alert(message);
+        setWatchlist((prevValue) => {
+          const newValue = [...prevValue];
+          const newWatchlistMovies = [];
+          for (const movieId of movieIds) {
+            const movie = _.find(movies, { id: movieId }) as TMovie;
+            newWatchlistMovies.push(movie);
+          }
+          newValue.push({
+            id: data.watchlist_id,
+            name,
+            movies: newWatchlistMovies,
+          });
+          return newValue;
+        });
+        console.log("Success Add watchlist", movies);
       },
       onError(err: any) {
         const data = err.response.data;
@@ -52,10 +76,10 @@ const ButtonAddWatchlist: React.FC = () => {
   );
 
   const [selected, setSelected] = useState<Option[]>([]);
-  const [movies, setMovies] = useState<Option[]>([]);
   useEffect(() => {
     backendInteractor.movies().then((data) => {
-      setMovies(
+      setMovies(data);
+      setMoviesOption(
         data.map(({ id, title }) => ({
           value: id,
           label: title,
@@ -86,7 +110,7 @@ const ButtonAddWatchlist: React.FC = () => {
         ) : null}
 
         <StyledMultiSelect
-          options={movies}
+          options={moviesOption}
           value={selected}
           onChange={(changedValue: Option[]) => {
             setFieldValue("movies", _.map(changedValue, "value"));

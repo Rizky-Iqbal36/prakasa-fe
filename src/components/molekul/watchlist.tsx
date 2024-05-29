@@ -74,7 +74,7 @@ const WatclisthScreen = () => {
     <Container>
       <HeaderWrapper>
         <PageTitle>Watchlist</PageTitle>
-        <ButtonAddWatchlist />
+        <ButtonAddWatchlist setWatchlist={setWatchlist} />
       </HeaderWrapper>
       <Divider />
       {!loading ? (
