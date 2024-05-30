@@ -119,6 +119,8 @@ const ButtonEditWatchlist: React.FC<{
             modifyWatchlist.movies.splice(removeIndex, 1);
           }
           if (addMovies.length > 0) modifyWatchlist.movies.push(...addMovies);
+          if (newValue.length === 1 && modifyWatchlist.movies.length === 0)
+            return [];
 
           return newValue;
         });

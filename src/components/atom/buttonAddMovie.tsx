@@ -21,7 +21,7 @@ const ButtonAddMovie: React.FC<{
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title required").min(1),
-      studio: Yup.string().required("Studio Required").min(8),
+      studio: Yup.string().required("Studio Required").min(2),
       thumbnail: Yup.string().required("Studio Required"),
     }),
     onSubmit: (values) => addMovie(values),

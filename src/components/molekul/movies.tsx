@@ -71,9 +71,11 @@ const MoviesScreen = () => {
         index: 0,
         movie_id: 0,
         title: "",
+        thumbnail: "",
       },
       validationSchema: Yup.object({
-        title: Yup.string().required("Title required").min(1),
+        title: Yup.string(),
+        thumbnail: Yup.string(),
       }),
       onSubmit: (values, { resetForm }) => {
         updateMovie(values);
@@ -81,8 +83,12 @@ const MoviesScreen = () => {
       },
     });
   const { mutate: updateMovie, isLoading } = useMutation(
-    async (payload: { movie_id: number; title: string; index: number }) =>
-      backendInteractor.updateMovie(payload),
+    async (payload: {
+      movie_id: number;
+      title: string;
+      thumbnail: string;
+      index: number;
+    }) => backendInteractor.updateMovie(payload),
     {
       async onSuccess({ message }: { message: string }, { index, title }) {
         setMovies((prevValues) => {
@@ -167,6 +173,25 @@ const MoviesScreen = () => {
                           />
                         </div>
                         {touched.title && errors.title ? (
+                          <p
+                            style={{
+                              color: "red",
+                              fontSize: 16,
+                              padding: 0,
+                              margin: 0,
+                            }}
+                          >
+                            {errors.title}
+                          </p>
+                        ) : null}
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="Thumbnail"
+                            {...getFieldProps("thumbnail")}
+                          />
+                        </div>
+                        {touched.thumbnail && errors.thumbnail ? (
                           <p
                             style={{
                               color: "red",

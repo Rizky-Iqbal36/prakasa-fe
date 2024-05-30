@@ -41,12 +41,14 @@ class BackendInteractor {
   public async updateMovie({
     movie_id,
     title,
+    thumbnail,
   }: {
     movie_id: number;
     title: string;
+    thumbnail: string;
   }) {
     return this.client
-      .put("movie/update", { movie_id, title }, postOptions)
+      .put("movie/update", { movie_id, title, thumbnail }, postOptions)
       .then((res) => res.data);
   }
 
